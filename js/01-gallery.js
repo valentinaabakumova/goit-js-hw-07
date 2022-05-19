@@ -4,49 +4,64 @@ import { galleryItems } from "./gallery-items.js";
 
 let gallery = document.querySelector(".gallery");
 
-const myGallery = galleryItems.map((galleryItem) => {
-  let img = document.createElement("img");
-  img.classList.add("gallery__item");
-  img.classList.add("gallery__image");
-  img.src = `${galleryItem.preview}`;
-  img.alt = `${galleryItem.description}`;
-  img.url = `${galleryItem.original}`;
+// const myGallery = galleryItems.map((galleryItem) => {
+//   let img = document.createElement("img");
+//   img.classList.add("gallery__item");
+//   img.classList.add("gallery__image");
+//   img.src = `${galleryItem.preview}`;
+//   img.alt = `${galleryItem.description}`;
+//   img.url = `${galleryItem.original}`;
+//   gallery.append(img);
+//   return img;
+// });
 
-  gallery.append(img);
-  return img;
-});
+const markup = galleryItems
+  .map(
+    (galleryItem) => `
+ <div class="gallery__item">
+  <a class="gallery__link" href="${galleryItem.original}" onclick = "event.preventDefault()">
+    <img
+      class="gallery__image"
+      src="${galleryItem.preview}"
+      data-source="${galleryItem.original}"
+      alt="${galleryItem.description}"
+    />
+  </a>
+</div>
+  `
+  )
+  .join("");
+
+gallery.insertAdjacentHTML("afterbegin", markup);
 
 gallery.addEventListener("click", gallaryItemClick);
 
 function gallaryItemClick(e) {
   const { target } = e;
-  console.log("click here", target);
-  console.log("but currentTarget here", e.currentTarget);
-
+  //   console.log("click here", target);
+  //   console.log("but currentTarget here", e.currentTarget);
   //   console.log(target.src);
   //   console.log(target.alt);
   //   console.log(target.url);
 
-  let content = `<img src="${target.url}" alt="${target.alt}">`;
+  let content = `<img src="${target.dataset.source}" alt="${target.alt}"/>`;
   const instance = basicLightbox.create(content);
   instance.show();
+  return instance;
 }
 
-///// ...... 1 ..... //////
+///// ...... try close by Esc..... //////
 
 // import * as basicLightbox from "basiclightbox";
 
-// const instance = basicLightbox.create(`
-// 	<h1>Dynamic Content</h1>
-// 	<p>You can set the content of the lightbox with JS.</p>
-// `);
+document.addEventListener("keydown", (e, instance) => {
+  if (instance.visible()) {
+    console.log("Keydown: ", e);
+    e.preventDefault();
 
-// instance.show();
-
-// import * as basicLightbox from "basiclightbox";
-
-// const instance2 = basicLightbox.create(`
-//     <img src="assets/images/image.png" width="800" height="600">
-// `);
-
-// instance2.show();
+    if (e.code === "Escape") {
+      console.log("ciao!");
+      instance.close();
+    }
+  }
+});
