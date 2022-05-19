@@ -15,7 +15,7 @@ let gallery = document.querySelector(".gallery");
 //   return img;
 // });
 
-const markup = galleryItems
+const myMarkup = galleryItems
   .map(
     (galleryItem) => `
  <div class="gallery__item">
@@ -32,7 +32,7 @@ const markup = galleryItems
   )
   .join("");
 
-gallery.insertAdjacentHTML("afterbegin", markup);
+gallery.insertAdjacentHTML("afterbegin", myMarkup);
 
 gallery.addEventListener("click", gallaryItemClick);
 
@@ -47,21 +47,30 @@ function gallaryItemClick(e) {
   let content = `<img src="${target.dataset.source}" alt="${target.alt}"/>`;
   const instance = basicLightbox.create(content);
   instance.show();
-  return instance;
+
+  if (instance.visible()) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        instance.close();
+      }
+    });
+  }
+
+  //   return instance;
 }
 
 ///// ...... try close by Esc..... //////
 
 // import * as basicLightbox from "basiclightbox";
 
-document.addEventListener("keydown", (e, instance) => {
-  if (instance.visible()) {
-    console.log("Keydown: ", e);
-    e.preventDefault();
+// document.addEventListener("keydown", (e, instance) => {
+//   if (instance.visible()) {
+//     console.log("Keydown: ", e);
+//     e.preventDefault();
 
-    if (e.code === "Escape") {
-      console.log("ciao!");
-      instance.close();
-    }
-  }
-});
+//     if (e.code === "Escape") {
+//       console.log("ciao!");
+//       instance.close();
+//     }
+//   }
+// });
