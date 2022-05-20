@@ -44,17 +44,32 @@ function gallaryItemClick(e) {
   }
 
   let content = `<img src="${target.dataset.source}" alt="${target.alt}"/>`;
-  const instance = basicLightbox.create(content);
+  //   const instance = basicLightbox.create(content);
+  //   instance.show();
+
+  //   ////  esc  ////
+
+  //   if (instance.visible()) {
+  //     document.addEventListener("keydown", (e) => {
+  //       if (e.key === "Escape") {
+  //         instance.close();
+  //         document.removeEventListener("keydown", (e) => {});
+  //       }
+  //     });
+  //   }
+
+  const instance = basicLightbox.create(content, {
+    onShow: () => {
+      window.addEventListener("keydown", onEscPress);
+    },
+  });
+
   instance.show();
 
-  ////  esc  ////
-
-  if (instance.visible()) {
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        instance.close();
-        document.removeEventListener("keydown", (e) => {});
-      }
-    });
+  function onEscPress(e) {
+    if (e.code === "Escape") {
+      instance.close();
+      window.removeEventListener("keydown", onEscPress);
+    }
   }
 }
