@@ -44,14 +44,28 @@ function gallaryItemClick(e) {
   //   console.log(target.alt);
   //   console.log(target.url);
 
+  if (e.target.nodeName !== "IMG") {
+    return;
+  }
+
   let content = `<img src="${target.dataset.source}" alt="${target.alt}"/>`;
   const instance = basicLightbox.create(content);
   instance.show();
+
+  //   if (instance.visible()) {
+  //     document.addEventListener("keydown", (e) => {
+  //       if (e.key === "Escape") {
+  //         instance.close();
+  //         document.removeEventListener("keydown");
+  //       }
+  //     });
+  //   }
 
   if (instance.visible()) {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         instance.close();
+        document.removeEventListener("keydown", e);
       }
     });
   }
