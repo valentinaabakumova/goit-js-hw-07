@@ -38,11 +38,6 @@ gallery.addEventListener("click", gallaryItemClick);
 
 function gallaryItemClick(e) {
   const { target } = e;
-  //   console.log("click here", target);
-  //   console.log("but currentTarget here", e.currentTarget);
-  //   console.log(target.src);
-  //   console.log(target.alt);
-  //   console.log(target.url);
 
   if (e.target.nodeName !== "IMG") {
     return;
@@ -52,39 +47,14 @@ function gallaryItemClick(e) {
   const instance = basicLightbox.create(content);
   instance.show();
 
-  //   if (instance.visible()) {
-  //     document.addEventListener("keydown", (e) => {
-  //       if (e.key === "Escape") {
-  //         instance.close();
-  //         document.removeEventListener("keydown");
-  //       }
-  //     });
-  //   }
+  ////  esc  ////
 
   if (instance.visible()) {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         instance.close();
-        document.removeEventListener("keydown", e);
+        document.removeEventListener("keydown", (e) => {});
       }
     });
   }
-
-  //   return instance;
 }
-
-///// ...... try close by Esc..... //////
-
-// import * as basicLightbox from "basiclightbox";
-
-// document.addEventListener("keydown", (e, instance) => {
-//   if (instance.visible()) {
-//     console.log("Keydown: ", e);
-//     e.preventDefault();
-
-//     if (e.code === "Escape") {
-//       console.log("ciao!");
-//       instance.close();
-//     }
-//   }
-// });
